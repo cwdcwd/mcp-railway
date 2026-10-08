@@ -1,0 +1,9 @@
+node_modules
+.env
+.git
+test
+*.md
+*.py
+.env.example
+Dockerfile
+compose.yaml

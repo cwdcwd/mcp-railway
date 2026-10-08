@@ -1,0 +1,25 @@
+name: railway-mcp   # pinned project name -> named volume is railway-mcp_railway_mcp_data
+services:
+  railway-mcp:
+    build: .
+    image: railway-mcp:local
+    container_name: railway-mcp
+    restart: unless-stopped
+    # tini as PID 1: reaps anything railway mcp leaves behind and forwards SIGTERM.
+    init: true
+    ports:
+      - "3003:3002"
+    environment:
+      # Docker's published ports bypass host firewalls, so this bearer gate is
+      # the listener's real access control.
+      RAILWAY_MCP_TOKEN: "${RAILWAY_MCP_TOKEN:?set RAILWAY_MCP_TOKEN in .env}"
+      # Comma-separated Host/Origin allow-lists (DNS-rebinding protection);
+      # unset = loopback only. See .env.example.
+      ALLOWED_HOSTS: "${ALLOWED_HOSTS:-}"
+      ALLOWED_ORIGINS: "${ALLOWED_ORIGINS:-}"
+    volumes:
+      # `railway login` session (run once: docker compose run --rm --entrypoint
+      # railway railway-mcp login --browserless)
+      - railway_mcp_data:/home/app/.railway
+volumes:
+  railway_mcp_data:
