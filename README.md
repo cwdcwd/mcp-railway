@@ -12,8 +12,8 @@ clients and aggregators can use it. Every call runs as the logged-in Railway use
 - Stateless HTTP transport; the upstream subprocess is shared, killed when
   dropped, and respawned if it exits
 - `GET /healthz` → `{ ok, upstreamPid }`
-- Railway CLI **v5.71.0** is pinned in the image for reproducible rebuilds;
-  use `--build-arg RAILWAY_CLI_VERSION=x.y.z` for deliberate upgrades.
+- Railway CLI **v5.71.0** (and its install script) is pinned in the image
+  (`RAILWAY_CLI_VERSION`). Deliberate upgrade: `--build-arg RAILWAY_CLI_VERSION=x.y.z`.
 
 ## Run
 

@@ -4,10 +4,11 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends curl ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
-# Pin the CLI so rebuilding the bridge is reproducible. Override at build time
-# only when intentionally upgrading: --build-arg RAILWAY_CLI_VERSION=x.y.z.
+# Pin the CLI release AND its install script (railway.com/install.sh is a
+# mutable URL; it currently serves the v-tag script byte-identical, so pin the
+# tag directly). Upgrade deliberately: --build-arg RAILWAY_CLI_VERSION=x.y.z.
 ARG RAILWAY_CLI_VERSION=5.71.0
-RUN curl -fsSL https://railway.com/install.sh | RAILWAY_VERSION="${RAILWAY_CLI_VERSION}" bash -s -- -y -b /usr/local/bin
+RUN curl -fsSL "https://raw.githubusercontent.com/railwayapp/cli/v${RAILWAY_CLI_VERSION}/install.sh" | RAILWAY_VERSION="${RAILWAY_CLI_VERSION}" bash -s -- -y -b /usr/local/bin
 
 # node:22 already ships uid 1000 as 'node'; rename it to 'app' with HOME
 # /home/app so the existing railway-mcp_railway_mcp_data volume (owned by
