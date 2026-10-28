@@ -8,11 +8,12 @@ services:
     # tini as PID 1: reaps anything railway mcp leaves behind and forwards SIGTERM.
     init: true
     ports:
-      - "3003:3002"
+      - "3003:3003"
     environment:
       # Docker's published ports bypass host firewalls, so this bearer gate is
       # the listener's real access control.
       RAILWAY_MCP_TOKEN: "${RAILWAY_MCP_TOKEN:?set RAILWAY_MCP_TOKEN in .env}"
+      PORT: "3003"
       # Comma-separated Host/Origin allow-lists (DNS-rebinding protection);
       # unset = loopback only. See .env.example.
       ALLOWED_HOSTS: "${ALLOWED_HOSTS:-}"
